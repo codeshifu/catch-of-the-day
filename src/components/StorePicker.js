@@ -4,8 +4,10 @@ import { getFunName } from '../helpers'
 class StorePicker extends React.Component {
     gotoStore (e) {
         e.preventDefault();
-        let input = this.storeInput;
-        console.log(input.value);
+        let inputValue = this.storeInput.value;
+        
+        const router = this.context.router;
+        router.transitionTo(`/store/${inputValue}`)
     }
     render() {
         return (
@@ -25,4 +27,7 @@ class StorePicker extends React.Component {
     }
 }
 
+StorePicker.contextTypes = {
+    router: React.PropTypes.object
+}
 export default StorePicker;
