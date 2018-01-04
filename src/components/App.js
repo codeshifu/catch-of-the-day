@@ -9,12 +9,17 @@ import sampleFishes from '../sample-fishes'
 export default class App extends React.Component {
     constructor(props) {
         super(props);
-
+        // add a fish
         this.addFish = this
             .addFish
             .bind(this);
+        // load sample fishes
         this.loadFishes = this
             .loadFishes
+            .bind(this);
+        // add fish to order
+        this.addToOrder = this
+            .addToOrder
             .bind(this);
         this.state = {
             fishes: {},
@@ -32,7 +37,13 @@ export default class App extends React.Component {
         // notify state
         this.setState({fishes})
     }
-
+    addToOrder(key) {
+        const order = {
+            ...this.state.order
+        };
+        order[key] = order[key] + 1 || 1;
+        this.setState({order})
+    }
     loadFishes() {
         this.setState({fishes: sampleFishes})
     }
@@ -45,7 +56,7 @@ export default class App extends React.Component {
                     <ul className="list-of-fishes">
                         {Object
                             .keys(this.state.fishes)
-                            .map(key => <Fish key={key} details={this.state.fishes[key]}/>)
+                            .map(key => <Fish key={key} index={key} details={this.state.fishes[key]} addToOrder={this.addToOrder}/>)
 }
                     </ul>
                 </div>
