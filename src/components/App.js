@@ -33,10 +33,23 @@ export default class App extends React.Component {
             context: this,
             state: 'fishes'
         });
+
+        const localStoreRef = localStorage.getItem(`order-${this.props.params.storeId}`);
+        if (localStoreRef) {
+            this.setState({
+                order: JSON.parse(localStoreRef)
+            })
+        }
     }
 
     componentWillUnmount () {
         base.removeBinding(this.ref);
+    }
+
+    componentWillUpdate (nextProps, nextState) {
+        if(localStorage) {
+            localStorage.setItem(`order-${this.props.params.storeId}`, JSON.stringify(nextState.order));
+        }
     }
 
     addFish(fish) {
@@ -66,13 +79,14 @@ export default class App extends React.Component {
                 <div className="menu">
                     <Header tagline="Fresh SeaFood Market"/>
                     <ul className="list-of-fishes">
-                        {Object
-                            .keys(this.state.fishes)
-                            .map(key => <Fish key={key} index={key} details={this.state.fishes[key]} addToOrder={this.addToOrder}/>)
-}
+                        {
+                            Object
+                                .keys(this.state.fishes)
+                                .map(key => <Fish key={key} index={key} details={this.state.fishes[key]} addToOrder={this.addToOrder}/>)
+                        }
                     </ul>
                 </div>
-                <Order fishes={this.state.fishes} order={this.state.order}/>
+                <Order fishes={this.state.fishes} order={this.state.order} params={this.props.params}/>
                 <Inventory addFish={this.addFish} loadFishes={this.loadFishes}/>
             </div>
         )
