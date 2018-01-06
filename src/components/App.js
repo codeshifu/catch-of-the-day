@@ -10,26 +10,37 @@ import sampleFishes from '../sample-fishes'
 export default class App extends React.Component {
     constructor(props) {
         super(props);
-        // add a fish
-        this.addFish = this
-            .addFish
-            .bind(this);
-        // update a fish
-        this.updateFish = this
-            .updateFish
-            .bind(this);
-        // load sample fishes
-        this.loadFishes = this
-            .loadFishes
-            .bind(this);
-        // add fish to order
-        this.addToOrder = this
-            .addToOrder
-            .bind(this);
+
+        // initial app state(s)
         this.state = {
             fishes: {},
             order: {}
         }
+
+        // add a fish
+        this.addFish = this
+            .addFish
+            .bind(this);
+
+        // load sample fishes
+        this.loadFishes = this
+            .loadFishes
+            .bind(this);
+
+        // update a fish
+        this.updateFish = this
+            .updateFish
+            .bind(this);
+
+        // delete a fish
+        this.removeFish = this
+            .removeFish
+            .bind(this);
+
+        // add fish to order
+        this.addToOrder = this
+            .addToOrder
+            .bind(this);
     }
 
     componentWillMount() {
@@ -61,6 +72,7 @@ export default class App extends React.Component {
         const fishes = {
             ...this.state.fishes
         };
+
         const timeStamp = Date.now();
         fishes[`fish-${timeStamp}`] = fish;
 
@@ -72,15 +84,29 @@ export default class App extends React.Component {
         const fishes = {
             ...this.state.fishes
         };
+
         fishes[key] = updatedFish;
+
         this.setState({fishes})
+    }
+
+    removeFish(key) {
+        const fishes = {
+            ...this.state.fishes
+        };
+        // set state to null (cos of firebase)
+        fishes[key] = null;
+
+        this.setState({fishes});
     }
     // place an order for a fish
     addToOrder(key) {
         const order = {
             ...this.state.order
         };
+
         order[key] = order[key] + 1 || 1;
+
         this.setState({order})
     }
 
@@ -112,8 +138,9 @@ export default class App extends React.Component {
                 <Inventory
                     fishes={this.state.fishes}
                     addFish={this.addFish}
+                    loadFishes={this.loadFishes}
                     updateFish={this.updateFish}
-                    loadFishes={this.loadFishes}/>
+                    removeFish={this.removeFish}/>
             </div>
         )
     }

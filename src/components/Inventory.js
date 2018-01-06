@@ -62,6 +62,8 @@ export default class Inventory extends React.Component {
                     type="text"
                     name="image"
                     placeholder="Fish image"/>
+
+                    <button onClick={() => this.props.removeFish(key)}>Remove Fish</button>
             </div>
         )
     }
