@@ -162,6 +162,7 @@ export default class App extends React.Component {
                     order={this.state.order}/>
 
                 <Inventory
+                    storeId={this.props.params.storeId}
                     fishes={this.state.fishes}
                     addFish={this.addFish}
                     loadFishes={this.loadFishes}
