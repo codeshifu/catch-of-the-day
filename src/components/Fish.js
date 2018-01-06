@@ -1,7 +1,7 @@
 import React from 'react'
 import {formatPrice} from "../helpers";
 
-export default class Fish extends React.Component {
+class Fish extends React.Component {
     render() {
         const {image, name, price, desc, status} = this.props.details;
         const isAvailable = status === 'available';
@@ -26,3 +26,12 @@ export default class Fish extends React.Component {
         )
     }
 }
+
+// props validation
+Fish.propTypes = {
+    index: React.PropTypes.string.isRequired,
+    details: React.PropTypes.object.isRequired,
+    addToOrder: React.PropTypes.func.isRequired,
+}
+
+export default Fish;

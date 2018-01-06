@@ -1,7 +1,7 @@
 import React from 'react';
 import {formatPrice} from "../helpers";
 
-export default class Order extends React.Component {
+class Order extends React.Component {
     constructor(props) {
         super(props);
         this.renderOrder = this
@@ -54,3 +54,11 @@ export default class Order extends React.Component {
         )
     }
 }
+
+Order.propTypes = {
+    fishes: React.PropTypes.object,
+    order: React.PropTypes.object,
+    removeOrder: React.PropTypes.func
+}
+
+export default Order;

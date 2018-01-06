@@ -1,7 +1,7 @@
 import React from 'react';
 import AddFishForm from './AddFishForm'
 
-export default class Inventory extends React.Component {
+class Inventory extends React.Component {
 
     constructor(props) {
         super(props);
@@ -20,7 +20,9 @@ export default class Inventory extends React.Component {
         }
 
         // call parent component updateFish method
-        this.props.updateFish(key, updatedFish);
+        this
+            .props
+            .updateFish(key, updatedFish);
     }
 
     renderInventory(key) {
@@ -63,7 +65,7 @@ export default class Inventory extends React.Component {
                     name="image"
                     placeholder="Fish image"/>
 
-                    <button onClick={() => this.props.removeFish(key)}>Remove Fish</button>
+                <button onClick={() => this.props.removeFish(key)}>Remove Fish</button>
             </div>
         )
     }
@@ -81,3 +83,14 @@ export default class Inventory extends React.Component {
         )
     }
 }
+
+// props validation
+Inventory.propTypes = {
+    fishes: React.PropTypes.object,
+    addFish: React.PropTypes.func,
+    loadFishes: React.PropTypes.func,
+    removeFish: React.PropTypes.func,
+    updateFish: React.PropTypes.func
+}
+
+export default Inventory;

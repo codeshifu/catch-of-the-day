@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default class AddFishForm extends React.Component {
+class AddFishForm extends React.Component {
 
     createFish(e) {
         e.preventDefault();
@@ -34,3 +34,11 @@ export default class AddFishForm extends React.Component {
         )
     }
 }
+
+// props validation
+AddFishForm.propTypes = {
+    addFish: React.PropTypes.func.isRequired,
+    loadFishes: React.PropTypes.func.isRequired,
+}
+
+export default AddFishForm;

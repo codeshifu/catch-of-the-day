@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default (props) => {
+function Header(props) {
     return (
         <header className="top">
             <h1>
@@ -17,3 +17,10 @@ export default (props) => {
         </header>
     )
 }
+
+// props validation
+Header.propTypes = {
+    tagline: React.PropTypes.string.isRequired
+}
+
+export default Header;

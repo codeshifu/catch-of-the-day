@@ -46,6 +46,11 @@ export default class App extends React.Component {
         this.removeOrder = this
             .removeOrder
             .bind(this);
+
+        // render list of fishes
+        this.renderFishes = this
+            .renderFishes
+            .bind(this);
     }
 
     componentWillMount() {
@@ -109,7 +114,7 @@ export default class App extends React.Component {
     loadFishes() {
         this.setState({fishes: sampleFishes})
     }
-    
+
     // place an order for a fish
     addToOrder(key) {
         const order = {
@@ -122,13 +127,23 @@ export default class App extends React.Component {
     }
 
     // remove fish from order
-    removeOrder (key) {
-        const order = {...this.state.order};
+    removeOrder(key) {
+        const order = {
+            ...this.state.order
+        };
         delete order[key]
 
-        this.setState({
-            order
-        });
+        this.setState({order});
+    }
+
+    renderFishes() {
+        return Object
+            .keys(this.state.fishes)
+            .map(key => <Fish
+                key={key}
+                index={key}
+                details={this.state.fishes[key]}
+                addToOrder={this.addToOrder}/>)
     }
 
     render() {
@@ -137,21 +152,15 @@ export default class App extends React.Component {
                 <div className="menu">
                     <Header tagline="Fresh SeaFood Market"/>
                     <ul className="list-of-fishes">
-                        {Object
-                            .keys(this.state.fishes)
-                            .map(key => <Fish
-                                key={key}
-                                index={key}
-                                details={this.state.fishes[key]}
-                                addToOrder={this.addToOrder}/>)
-}
+                        {this.renderFishes()}
                     </ul>
                 </div>
+
                 <Order
                     removeOrder={this.removeOrder}
                     fishes={this.state.fishes}
-                    order={this.state.order}
-                    params={this.props.params}/>
+                    order={this.state.order}/>
+
                 <Inventory
                     fishes={this.state.fishes}
                     addFish={this.addFish}
