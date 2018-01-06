@@ -14,6 +14,10 @@ export default class App extends React.Component {
         this.addFish = this
             .addFish
             .bind(this);
+        // update a fish
+        this.updateFish = this
+            .updateFish
+            .bind(this);
         // load sample fishes
         this.loadFishes = this
             .loadFishes
@@ -28,7 +32,7 @@ export default class App extends React.Component {
         }
     }
 
-    componentWillMount () {
+    componentWillMount() {
         this.ref = base.syncState(`${this.props.params.storeId}/fishes`, {
             context: this,
             state: 'fishes'
@@ -42,16 +46,17 @@ export default class App extends React.Component {
         }
     }
 
-    componentWillUnmount () {
+    componentWillUnmount() {
         base.removeBinding(this.ref);
     }
 
-    componentWillUpdate (nextProps, nextState) {
-        if(localStorage) {
+    componentWillUpdate(nextProps, nextState) {
+        if (localStorage) {
             localStorage.setItem(`order-${this.props.params.storeId}`, JSON.stringify(nextState.order));
         }
     }
 
+    // add a fish
     addFish(fish) {
         const fishes = {
             ...this.state.fishes
@@ -62,6 +67,15 @@ export default class App extends React.Component {
         // notify state
         this.setState({fishes})
     }
+
+    updateFish(key, updatedFish) {
+        const fishes = {
+            ...this.state.fishes
+        };
+        fishes[key] = updatedFish;
+        this.setState({fishes})
+    }
+    // place an order for a fish
     addToOrder(key) {
         const order = {
             ...this.state.order
@@ -69,6 +83,8 @@ export default class App extends React.Component {
         order[key] = order[key] + 1 || 1;
         this.setState({order})
     }
+
+    // load saved fishes from firebase db if available
     loadFishes() {
         this.setState({fishes: sampleFishes})
     }
@@ -79,15 +95,25 @@ export default class App extends React.Component {
                 <div className="menu">
                     <Header tagline="Fresh SeaFood Market"/>
                     <ul className="list-of-fishes">
-                        {
-                            Object
-                                .keys(this.state.fishes)
-                                .map(key => <Fish key={key} index={key} details={this.state.fishes[key]} addToOrder={this.addToOrder}/>)
-                        }
+                        {Object
+                            .keys(this.state.fishes)
+                            .map(key => <Fish
+                                key={key}
+                                index={key}
+                                details={this.state.fishes[key]}
+                                addToOrder={this.addToOrder}/>)
+}
                     </ul>
                 </div>
-                <Order fishes={this.state.fishes} order={this.state.order} params={this.props.params}/>
-                <Inventory addFish={this.addFish} loadFishes={this.loadFishes}/>
+                <Order
+                    fishes={this.state.fishes}
+                    order={this.state.order}
+                    params={this.props.params}/>
+                <Inventory
+                    fishes={this.state.fishes}
+                    addFish={this.addFish}
+                    updateFish={this.updateFish}
+                    loadFishes={this.loadFishes}/>
             </div>
         )
     }
