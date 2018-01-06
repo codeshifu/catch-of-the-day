@@ -41,6 +41,11 @@ export default class App extends React.Component {
         this.addToOrder = this
             .addToOrder
             .bind(this);
+
+        // remove fish from order
+        this.removeOrder = this
+            .removeOrder
+            .bind(this);
     }
 
     componentWillMount() {
@@ -99,6 +104,12 @@ export default class App extends React.Component {
 
         this.setState({fishes});
     }
+
+    // load saved fishes from firebase db if available
+    loadFishes() {
+        this.setState({fishes: sampleFishes})
+    }
+    
     // place an order for a fish
     addToOrder(key) {
         const order = {
@@ -110,9 +121,14 @@ export default class App extends React.Component {
         this.setState({order})
     }
 
-    // load saved fishes from firebase db if available
-    loadFishes() {
-        this.setState({fishes: sampleFishes})
+    // remove fish from order
+    removeOrder (key) {
+        const order = {...this.state.order};
+        delete order[key]
+
+        this.setState({
+            order
+        });
     }
 
     render() {
@@ -132,6 +148,7 @@ export default class App extends React.Component {
                     </ul>
                 </div>
                 <Order
+                    removeOrder={this.removeOrder}
                     fishes={this.state.fishes}
                     order={this.state.order}
                     params={this.props.params}/>
